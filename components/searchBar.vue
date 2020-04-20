@@ -1,39 +1,57 @@
 <template>
-    <div class="search-bar__flex-container"><div class='search-bar'>
-    <input
-    type="text"
-    class="search-bar__input"
-    placeholder="Search"
-    aria-label="search"
-    />
-    <button class="search-bar__button" role='button'>
-    <q-icon name='search' class='search-bar__icon'></q-icon>
-    </button>
-    </div></div>
+    <div class="search-bar__flex-container">
+        <div class='search-bar' :style='style'>
+            <input
+                type="text"
+                class="search-bar__input"
+                placeholder="Search"
+                aria-label="search"
+            />
+            <button class="search-bar__button" role='button'>
+            <q-icon name='search' class='search-bar__icon'></q-icon>
+            </button>
+        </div>
+    </div>
 </template>
 
 <script>
 export default {
-    name: 'searchBar'
+    name: 'searchBar',
+    data () {
+        return {
+            style: ''
+        }
+    },
+    props: {
+        size: {
+            type: String,
+            default: '32px'
+        },
+    },
+    created () {
+        document.documentElement.style.setProperty('--search-bar-size', '32px')
+    },
+    mounted () {
+        this.style = '--search-bar-size: ' + this.size + ';';
+    }
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang='scss'>
     .search-bar__flex-container {
         display:flex;
         justify-content: inherit;
         flex:1;
     }
     .search-bar {
-        --size: 32px;
-        --font-size: max(1.25rem, calc(var(--size) / 1.6));
+        --font-size: max(1.25rem, calc(var(--search-bar-size) / 1.6));
 
         border: 2px solid black;
         display: flex;
         margin: .5em;
-        border-radius: var(--size);
-        height: var(--size);
-        width: var(--size);
+        border-radius: var(--search-bar-size);
+        height: var(--search-bar-size);
+        width: var(--search-bar-size);
         flex: 0;
         flex-basis: initial;
         position:relative;
@@ -55,15 +73,15 @@ export default {
             background-color:rgba(0,0,0,1);
             opacity: 0;
             z-index: 1;
-            border-radius: var(--size);
+            border-radius: var(--search-bar-size);
         }
 
         &__button {
             position:relative;
             font-size: var(--font-size);
             border-radius: 50%;
-            height: calc(var(--size) - 10px);
-            width: calc(var(--size) - 10px);
+            height: calc(var(--search-bar-size) - 10px);
+            width: calc(var(--search-bar-size) - 10px);
             border: none;
             background-color:white;
             margin-left:auto;
@@ -89,7 +107,7 @@ export default {
                 opacity: 1;
                 background-color: white;
                 cursor: initial;
-                padding-right: var(--size);
+                padding-right: var(--search-bar-size);
 
             }
             .search-bar__button {
