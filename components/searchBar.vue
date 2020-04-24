@@ -123,8 +123,14 @@ export default {
                 z-index: 1;
             }
 
+            .search-bar__button {
+                background-color: var(--button-alt-color);
+                color: var(--button-pri-color);
+                z-index: 2;
+            }
+
             & .search-bar__button:hover .search-bar__hover-layer {
-                background-color: rgba(black, .3);
+                background-color: rgba(white, .3);
             }
         }
 
