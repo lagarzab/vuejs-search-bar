@@ -1,6 +1,6 @@
 <template>
     <div class="search-bar__flex-container">
-        <div class='search-bar' :style='searchBarStyle'>
+        <div :class='"search-bar " + forceExpandClass' :style='searchBarStyle'>
             <input
                 type="text"
                 class="search-bar__input"
@@ -29,7 +29,8 @@ export default {
     data () {
         return {
             searchBarStyle: '',
-            buttonStyle: ''
+            buttonStyle: '',
+            forceExpandClass: ''
         }
     },
     props: {
@@ -48,6 +49,10 @@ export default {
         buttonAltColor: {
             type: String,
             default: ''
+        },
+        alwaysExpanded: {
+            type: Boolean,
+            default: false
         }
     },
     created () {
@@ -57,14 +62,15 @@ export default {
         document.documentElement.style.setProperty('--button-alt-color','#000')
     },
     mounted () {
-        !this.buttonPrimaryColor ? this.buttonPrimaryColor = '#fff' : null
-        !this.buttonAltColor ? this.buttonAltColor = '#000' : null
-        !this.borderColor ? this.borderColor = this.buttonAltColor : null
+        let primaryColor = this.buttonPrimaryColor ? this.buttonPrimaryColor : '#fff'
+        let altColor = this.buttonAltColor ? this.buttonAltColor : '#000'
+        let borderColor = this.borderColor ? this.borderColor : altColor
+        this.forceExpandClass = this.alwaysExpanded ? 'forceExpand' : ''
 
         this.searchBarStyle = `--search-bar-size:${this.size};`;
-        this.searchBarStyle += `--border-color:${this.borderColor};`
-        this.buttonStyle = `--button-pri-color:${this.buttonPrimaryColor};`
-        this.buttonStyle += `--button-alt-color:${this.buttonAltColor};`
+        this.searchBarStyle += `--border-color:${borderColor};`
+        this.buttonStyle = `--button-pri-color:${primaryColor};`
+        this.buttonStyle += `--button-alt-color:${altColor};`
     }
 }
 </script>
@@ -107,6 +113,21 @@ export default {
             border-radius: var(--search-bar-size);
         }
 
+        &.forceExpand {
+            flex: 1;
+            & .search-bar__input {
+                opacity: 1;
+                background-color: white;
+                cursor: initial;
+                padding-right: var(--search-bar-size);
+                z-index: 1;
+            }
+
+            & .search-bar__button:hover .search-bar__hover-layer {
+                background-color: rgba(black, .3);
+            }
+        }
+
         &__button {
             position:relative;
             font-size: var(--font-size);
@@ -140,13 +161,13 @@ export default {
             z-index: 1;
         }
 
-        &__input:hover {
+        &:not(.forceExpand) &__input:hover {
             &:not(:focus-within) ~ button .search-bar__hover-layer {
                 background-color: rgba(black, .3);
             }
         }
 
-        &:focus-within {
+        &:not(.forceExpand):focus-within {
             flex: 1;
 
             .search-bar__input {
