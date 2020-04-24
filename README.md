@@ -6,6 +6,9 @@ An rgba([white || black], .3) is either applied or 'removed' when the effect is 
 The search bar component exports only a searchBar component.
 
 ### `searchBar` Component
+There is one prop which can be used to prevent the collapsing of this search bar component.
+- `alwaysExpanded`: By passing this prop as `true` to the component, the search bar will render in its expanded state and remain that way.
+
 There are props available for styling:
 
 - `size`: This is the height of the container. Defaults to 32px.
